@@ -1,70 +1,134 @@
-# Getting Started with Create React App
+# Social Support Portal
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A government social support portal that allows citizens to apply for financial assistance with an AI-assisted multi-step form wizard.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- **3-Step Form Wizard** — Personal Info → Family & Financial → Situation Description
+- **AI Writing Assistance** — "Help Me Write" button on Step 3 uses OpenAI GPT to draft text
+- **English + Arabic (RTL)** — full bilingual support with RTL layout
+- **Responsive** — mobile, tablet, and desktop
+- **Dark / Light Mode** — theme toggle in the header
+- **Auto-Save** — form progress is saved to LocalStorage on every step
+- **Accessibility** — ARIA labels, keyboard navigation, focus management
 
-### `npm start`
+## Tech Stack
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+| Layer | Library |
+|---|---|
+| Framework | React 18 |
+| UI | Material UI v5 |
+| Forms | React Hook Form |
+| State | Redux Toolkit |
+| HTTP | Axios |
+| i18n | react-i18next |
+| Routing | React Router v6 |
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## Getting Started
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 1. Install dependencies
 
-### `npm run build`
+```bash
+npm install --legacy-peer-deps
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 2. Configure the OpenAI API key
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Copy `.env.example` to `.env` and fill in your key:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+cp .env.example .env
+```
 
-### `npm run eject`
+Open `.env` and set:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```
+REACT_APP_OPENAI_API_KEY=sk-...your-key-here...
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Get a key at https://platform.openai.com/api-keys
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+> **Without a key:** The form works fully. The "Help Me Write" button shows a clear error message explaining the key is missing, and users can still type manually.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### 3. Start the dev server
 
-## Learn More
+```bash
+npm start
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Open http://localhost:3000
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
+## Project Structure
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```
+src/
+├── components/
+│   ├── AI/
+│   │   └── SuggestionDialog.js   # AI popup: Accept / Edit / Discard
+│   ├── common/
+│   │   ├── Header.js             # App bar with lang/theme toggles
+│   │   └── SaveIndicator.js      # "Progress saved" toast
+│   ├── FormWizard/
+│   │   ├── FormWizard.js         # Wizard shell, nav buttons, form context
+│   │   └── ProgressStepper.js    # Linear progress + MUI Stepper
+│   └── steps/
+│       ├── Step1PersonalInfo.js  # Name, ID, DOB, Gender, Address
+│       ├── Step2FamilyFinancial.js # Marital, Dependents, Employment, Income, Housing
+│       └── Step3SituationDesc.js # 3 AI-assisted textareas
+├── i18n/
+│   ├── en.json                   # English strings
+│   ├── ar.json                   # Arabic strings
+│   └── index.js                  # i18next config
+├── pages/
+│   ├── ApplicationPage.js        # Routes form vs. success
+│   └── SuccessPage.js            # Reference number + confirmation
+├── services/
+│   └── openai.js                 # Axios call to OpenAI GPT-3.5-turbo
+├── slices/
+│   ├── formSlice.js              # Form data + step + submit + LocalStorage
+│   └── uiSlice.js                # Theme mode + language
+├── store/
+│   └── index.js                  # Redux store
+└── theme/
+    └── index.js                  # MUI theme (light/dark + RTL)
+```
 
-### Analyzing the Bundle Size
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Architecture Notes
 
-### Making a Progressive Web App
+### State Management
+Redux Toolkit holds two slices:
+- `form` — all field values, current step, submission state, reference number. Every mutation persists to `localStorage` automatically.
+- `ui` — theme mode and language selection.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Form Handling
+React Hook Form's `FormProvider` wraps the entire wizard so each step's `Controller` fields connect to the same form instance. On "Next", `trigger()` validates only the visible step's fields before advancing.
 
-### Advanced Configuration
+### AI Integration
+`services/openai.js` builds a context-aware GPT-3.5-turbo prompt per field using the user's Step 2 data (employment status, income, dependents). The response appears in a modal where the user can:
+1. **Use This Text** — inserts directly into the textarea
+2. **Edit First** — opens an inline editor inside the modal
+3. **Discard** — closes without changes
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Errors (no key, timeout, API failure) are caught and shown with user-friendly messages inside the modal.
 
-### Deployment
+### Internationalization
+`react-i18next` with JSON resource files. Switching to Arabic triggers:
+- `document.dir = 'rtl'`
+- MUI theme `direction: 'rtl'` (flips flex direction, margins, etc.)
+- Arabic font stack (Noto Sans Arabic)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+---
 
-### `npm run build` fails to minify
+## Potential Improvements
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Add a PDF export of the submitted application
+- Persist draft to a backend API instead of only LocalStorage
+- Add file upload for supporting documents
+- Add unit tests with React Testing Library
+- Add CAPTCHA to prevent spam submissions
