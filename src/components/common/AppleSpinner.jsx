@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box } from '@mui/material';
 import { useTheme, keyframes } from '@mui/material/styles';
+import { useTranslation } from 'react-i18next';
 
 const fade = keyframes`
   0%   { opacity: 1;   }
@@ -20,6 +21,7 @@ const fade = keyframes`
  */
 const AppleSpinner = ({ size = 40 }) => {
   const theme = useTheme();
+  const { t } = useTranslation();
   const color = theme.palette.mode === 'dark'
     ? 'rgba(235,235,245,0.90)'
     : 'rgba(60,60,67,0.85)';
@@ -27,7 +29,7 @@ const AppleSpinner = ({ size = 40 }) => {
   return (
     <Box
       role="progressbar"
-      aria-label="Loading"
+      aria-label={t('aria.loading')}
       sx={{ position: 'relative', width: size, height: size, flexShrink: 0 }}
     >
       {Array.from({ length: 12 }).map((_, i) => (

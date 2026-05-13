@@ -59,7 +59,7 @@
     "student": "Student",
     "retired": "Retired",
     "unable": "Unable to Work",
-    "monthlyIncome": "Monthly Income (USD)",
+    "monthlyIncome": "Monthly Income (AED)",
     "monthlyIncomePlaceholder": "0.00",
     "familySection": "Family",
     "employmentSection": "Employment & Income",
@@ -80,21 +80,23 @@
     "employmentCircumstancesHelp": "Describe your employment history and current job situation",
     "reasonForApplying": "Reason for Applying",
     "reasonForApplyingHelp": "Explain why you need financial assistance at this time",
-    "helpMeWrite": "Help Me Write",
+    "helpMeWrite": "Help Me Write with Open AI",
     "helpMeWriteOpenAI": "Write with OpenAI GPT-4o mini",
     "helpMeWriteGroq": "Write with Groq Llama 3.3 (Free)",
-    "helpMeWriteGroqLabel": "Groq (Free)",
+    "helpMeWriteGroqLabel": "Help Me Write with Groq",
     "charactersCount": "{{count}} characters"
   },
   "ai": {
     "generating": "Generating suggestion...",
+    "loadingOpenAI": "Generating with OpenAI…",
+    "loadingGroq": "Fast inference via Groq…",
     "suggestion": "AI-Generated Suggestion",
     "suggestionSubtitle": "Review and edit the suggestion below before using it",
     "accept": "Use This Text",
     "edit": "Edit First",
     "discard": "Discard",
     "retry": "Try Again",
-    "errorNoKey": "OpenAI API key not configured. Add REACT_APP_OPENAI_API_KEY to your .env file.",
+    "errorNoKey": "OpenAI API key not configured. Add VITE_OPENAI_API_KEY to your .env file.",
     "errorQuota": "Your OpenAI API key has no remaining credits. Please add billing at platform.openai.com/account/billing to use this feature.",
     "errorInvalidKey": "Invalid OpenAI API key. Please check the key in your .env file.",
     "errorRateLimit": "Too many requests. Please wait a moment and try again.",
@@ -103,10 +105,22 @@
     "quotaErrorTitle": "Insufficient API Credits",
     "cannotGenerateTitle": "Could not generate suggestion",
     "addBillingLink": "Add billing credits",
+    "providerOpenAI": "OpenAI",
+    "providerGroq": "Groq",
     "poweredBy": "Powered by OpenAI GPT-4o mini",
     "poweredByGroq": "Powered by Groq Llama 3.3 (Free)",
     "suggestionSubtitleGroq": "Free AI via Groq — review before using",
-    "errorNoKeyGroq": "Groq API key not configured. Add REACT_APP_GROQ_API_KEY to your .env file."
+    "errorNoKeyGroq": "Groq API key not configured. Add VITE_GROQ_API_KEY to your .env file."
+  },
+  "splash": {
+    "poweredBy": "Powered by Samsudeen SM"
+  },
+  "aria": {
+    "loading": "Loading",
+    "close": "Close",
+    "editSuggestion": "Edit AI suggestion",
+    "toggleLanguage": "Toggle language",
+    "toggleTheme": "Toggle theme"
   },
   "validation": {
     "required": "This field is required",
@@ -124,6 +138,7 @@
     "message": "Thank you for submitting your application. We will review your information and contact you within 5-7 business days.",
     "referenceNumber": "Reference Number",
     "applicationReceived": "Application Received",
+    "applicationSummary": "Application Summary",
     "newApplication": "Start New Application",
     "downloadPDF": "Download Summary"
   },

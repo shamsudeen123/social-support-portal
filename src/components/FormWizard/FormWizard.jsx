@@ -30,7 +30,7 @@ const FormWizard = () => {
   const [submitting, setSubmitting] = useState(false);
 
   const methods = useForm({ defaultValues: formData, mode: 'onBlur' });
-  const { handleSubmit, reset, getValues, trigger } = methods;
+  const { handleSubmit, reset, getValues, trigger, clearErrors } = methods;
   const prevStepRef = useRef(currentStep);
 
   useEffect(() => {
@@ -39,6 +39,11 @@ const FormWizard = () => {
       prevStepRef.current = currentStep;
     }
   }, [currentStep, formData, reset]);
+
+  // Clear errors when language changes so they re-appear in the new language
+  useEffect(() => {
+    clearErrors();
+  }, [language, clearErrors]);
 
   const persist = () => {
     dispatch(updateFormData(getValues()));

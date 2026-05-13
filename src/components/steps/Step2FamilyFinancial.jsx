@@ -79,6 +79,7 @@ const Step2FamilyFinancial = () => {
                 error={!!errors.maritalStatus}
                 helperText={errors.maritalStatus?.message}
                 inputProps={{ 'aria-label': t('family.maritalStatus') }}
+                SelectProps={{ renderValue: (val) => maritalOptions.find(o => o.value === val)?.label ?? val }}
               >
                 {maritalOptions.map((o) => (
                   <MenuItem key={o.value} value={o.value}>{o.label}</MenuItem>
@@ -128,6 +129,7 @@ const Step2FamilyFinancial = () => {
                 error={!!errors.employmentStatus}
                 helperText={errors.employmentStatus?.message}
                 inputProps={{ 'aria-label': t('family.employmentStatus') }}
+                SelectProps={{ renderValue: (val) => employmentOptions.find(o => o.value === val)?.label ?? val }}
               >
                 {employmentOptions.map((o) => (
                   <MenuItem key={o.value} value={o.value}>{o.label}</MenuItem>
@@ -155,7 +157,7 @@ const Step2FamilyFinancial = () => {
                 error={!!errors.monthlyIncome}
                 helperText={errors.monthlyIncome?.message}
                 InputProps={{
-                  startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                  startAdornment: <InputAdornment position="start">AED</InputAdornment>,
                 }}
                 inputProps={{ min: 0, step: '0.01', 'aria-label': t('family.monthlyIncome') }}
               />
@@ -181,6 +183,7 @@ const Step2FamilyFinancial = () => {
                 error={!!errors.housingStatus}
                 helperText={errors.housingStatus?.message}
                 inputProps={{ 'aria-label': t('family.housingStatus') }}
+                SelectProps={{ renderValue: (val) => housingOptions.find(o => o.value === val)?.label ?? val }}
               >
                 {housingOptions.map((o) => (
                   <MenuItem key={o.value} value={o.value}>{o.label}</MenuItem>

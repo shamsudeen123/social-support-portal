@@ -59,7 +59,7 @@
     "student": "طالب / طالبة",
     "retired": "متقاعد / متقاعدة",
     "unable": "غير قادر على العمل",
-    "monthlyIncome": "الدخل الشهري (دولار أمريكي)",
+    "monthlyIncome": "الدخل الشهري (درهم إماراتي)",
     "monthlyIncomePlaceholder": "0.00",
     "familySection": "الأسرة",
     "employmentSection": "التوظيف والدخل",
@@ -80,21 +80,23 @@
     "employmentCircumstancesHelp": "صف تاريخك الوظيفي ووضعك الوظيفي الحالي",
     "reasonForApplying": "سبب التقديم",
     "reasonForApplyingHelp": "اشرح سبب حاجتك للمساعدة المالية في هذا الوقت",
-    "helpMeWrite": "مساعدة في الكتابة",
-    "helpMeWriteOpenAI": "كتابة باستخدام OpenAI GPT-4o mini",
-    "helpMeWriteGroq": "كتابة باستخدام Groq Llama 3.3 (مجاني)",
-    "helpMeWriteGroqLabel": "Groq (مجاني)",
+    "helpMeWrite": "كتابة ذكية",
+    "helpMeWriteOpenAI": "كتابة بمساعدة الذكاء الاصطناعي عبر OpenAI",
+    "helpMeWriteGroq": "كتابة سريعة بالذكاء الاصطناعي عبر Groq (مجاني)",
+    "helpMeWriteGroqLabel": "كتابة سريعة",
     "charactersCount": "{{count}} حرف"
   },
   "ai": {
     "generating": "جارٍ إنشاء الاقتراح...",
+    "loadingOpenAI": "جارٍ إنشاء النص بالذكاء الاصطناعي…",
+    "loadingGroq": "جارٍ الإنشاء السريع بالذكاء الاصطناعي…",
     "suggestion": "اقتراح مُنشأ بالذكاء الاصطناعي",
     "suggestionSubtitle": "راجع الاقتراح أدناه وعدّله قبل استخدامه",
     "accept": "استخدام هذا النص",
     "edit": "تعديل أولاً",
     "discard": "تجاهل",
     "retry": "حاول مجدداً",
-    "errorNoKey": "لم يتم تكوين مفتاح OpenAI API. يرجى إضافة REACT_APP_OPENAI_API_KEY في ملف .env.",
+    "errorNoKey": "لم يتم تكوين مفتاح OpenAI API. يرجى إضافة VITE_OPENAI_API_KEY في ملف .env.",
     "errorQuota": "لا يوجد رصيد في مفتاح OpenAI API. يرجى إضافة بيانات الفوترة على platform.openai.com/account/billing.",
     "errorInvalidKey": "مفتاح OpenAI API غير صالح. يرجى التحقق من المفتاح في ملف .env.",
     "errorRateLimit": "طلبات كثيرة جداً. يرجى الانتظار لحظة والمحاولة مجدداً.",
@@ -103,10 +105,22 @@
     "quotaErrorTitle": "رصيد API غير كافٍ",
     "cannotGenerateTitle": "تعذّر إنشاء اقتراح",
     "addBillingLink": "إضافة رصيد فوترة",
-    "poweredBy": "مدعوم بواسطة OpenAI GPT-4o mini",
-    "poweredByGroq": "مدعوم بواسطة Groq Llama 3.3 (مجاني)",
-    "suggestionSubtitleGroq": "ذكاء اصطناعي مجاني عبر Groq — راجع قبل الاستخدام",
-    "errorNoKeyGroq": "لم يتم تكوين مفتاح Groq API. يرجى إضافة REACT_APP_GROQ_API_KEY في ملف .env."
+    "providerOpenAI": "ذكاء اصطناعي",
+    "providerGroq": "ذكاء سريع",
+    "poweredBy": "مدعوم بتقنية الذكاء الاصطناعي",
+    "poweredByGroq": "مدعوم بتقنية الذكاء الاصطناعي (مجاني)",
+    "suggestionSubtitleGroq": "ذكاء اصطناعي مجاني — راجع النص قبل استخدامه",
+    "errorNoKeyGroq": "لم يتم تكوين مفتاح Groq API. يرجى إضافة VITE_GROQ_API_KEY في ملف .env."
+  },
+  "splash": {
+    "poweredBy": "من تطوير Samsudeen SM"
+  },
+  "aria": {
+    "loading": "جارٍ التحميل",
+    "close": "إغلاق",
+    "editSuggestion": "تعديل اقتراح الذكاء الاصطناعي",
+    "toggleLanguage": "تبديل اللغة",
+    "toggleTheme": "تبديل المظهر"
   },
   "validation": {
     "required": "هذا الحقل مطلوب",
@@ -121,9 +135,10 @@
   "submit": {
     "title": "تم تقديم الطلب!",
     "subtitle": "تم استلام طلبك",
-    "message": "شكرًا لتقديم طلبك. سنراجع معلوماتك ونتواصل معك خلال 5-7 أيام عمل.",
+    "message": "شكرًا لتقديم طلبك. سنراجع معلوماتك ونتواصل معك خلال ٥-٧ أيام عمل.",
     "referenceNumber": "الرقم المرجعي",
     "applicationReceived": "تم استلام الطلب",
+    "applicationSummary": "ملخص الطلب",
     "newApplication": "بدء طلب جديد",
     "downloadPDF": "تحميل الملخص"
   },

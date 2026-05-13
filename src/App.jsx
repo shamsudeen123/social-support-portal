@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 import getTheme from './theme';
 import Header from './components/common/Header';
 import ApplicationPage from './pages/ApplicationPage';
+import SplashScreen from './components/common/SplashScreen';
 import './i18n';
 
 const cacheLtr = createCache({ key: 'mui' });
@@ -19,6 +20,7 @@ const App = () => {
   const { themeMode, language } = useSelector((s) => s.ui);
   const { i18n } = useTranslation();
   const direction = language === 'ar' ? 'rtl' : 'ltr';
+  const [splashDone, setSplashDone] = useState(false);
 
   React.useEffect(() => {
     document.documentElement.dir = direction;
@@ -32,6 +34,7 @@ const App = () => {
     <CacheProvider value={direction === 'rtl' ? cacheRtl : cacheLtr}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
+        {!splashDone && <SplashScreen onDone={() => setSplashDone(true)} />}
         <BrowserRouter>
           <div dir={direction}>
             <Header />

@@ -107,6 +107,7 @@ const Step1PersonalInfo = () => {
                   htmlInput: {
                     'aria-label': t('personal.dateOfBirth'),
                     max: new Date().toISOString().split('T')[0],
+                    dir: 'ltr',
                   },
                 }}
               />
@@ -128,6 +129,7 @@ const Step1PersonalInfo = () => {
                 error={!!errors.gender}
                 helperText={errors.gender?.message}
                 inputProps={{ 'aria-label': t('personal.gender') }}
+                SelectProps={{ renderValue: (val) => genderOptions.find(o => o.value === val)?.label ?? val }}
               >
                 {genderOptions.map((o) => (
                   <MenuItem key={o.value} value={o.value}>{o.label}</MenuItem>

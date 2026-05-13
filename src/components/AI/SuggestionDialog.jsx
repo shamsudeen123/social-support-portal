@@ -24,7 +24,7 @@ const ERROR_MAP = {
 };
 
 const SuggestionDialog = ({
-  open, loading, suggestion, error,
+  open, loading, suggestion, error, errorMessage = '',
   provider = 'openai', onAccept, onDiscard, onRetry,
 }) => {
   const { t } = useTranslation();
@@ -97,7 +97,7 @@ const SuggestionDialog = ({
           {/* Provider chip + close — grouped so they don't split */}
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexShrink: 0 }}>
             <Chip
-              label={isGroq ? 'Groq' : 'OpenAI'}
+              label={isGroq ? t('ai.providerGroq') : t('ai.providerOpenAI')}
               size="small"
               sx={{
                 bgcolor: 'rgba(255,255,255,0.20)',
@@ -112,7 +112,7 @@ const SuggestionDialog = ({
               <IconButton
                 onClick={onDiscard}
                 size="small"
-                aria-label="Close"
+                aria-label={t('aria.close')}
                 sx={{
                   color: 'rgba(255,255,255,0.80)',
                   '&:hover': { bgcolor: 'rgba(255,255,255,0.15)' },
@@ -153,7 +153,7 @@ const SuggestionDialog = ({
                 {t('ai.generating')}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                {isGroq ? 'Fast inference via Groq…' : 'Powered by OpenAI…'}
+                {isGroq ? t('ai.loadingGroq') : t('ai.loadingOpenAI')}
               </Typography>
             </Box>
           </Box>
@@ -170,7 +170,9 @@ const SuggestionDialog = ({
               <AlertTitle sx={{ fontWeight: 700, mb: 0.5 }}>
                 {isQuotaError ? t('ai.quotaErrorTitle') : t('ai.cannotGenerateTitle')}
               </AlertTitle>
-              <Typography variant="body2" lineHeight={1.7}>{t(errorMeta.key)}</Typography>
+              <Typography variant="body2" lineHeight={1.7}>
+                {error === 'API_ERROR' && errorMessage ? errorMessage : t(errorMeta.key)}
+              </Typography>
               {isQuotaError && (
                 <Box mt={1.5}>
                   <Link
@@ -182,6 +184,25 @@ const SuggestionDialog = ({
                   >
                     {t('ai.addBillingLink')} →
                   </Link>
+                </Box>
+              )}
+              {errorMessage && error !== 'API_ERROR' && (
+                <Box
+                  sx={{
+                    mt: 1.5, px: 1.5, py: 1, borderRadius: 1.5,
+                    bgcolor: 'rgba(0,0,0,0.06)',
+                  }}
+                >
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      fontFamily: 'monospace', fontSize: '0.7rem',
+                      color: 'text.secondary', wordBreak: 'break-all',
+                      display: 'block', lineHeight: 1.6,
+                    }}
+                  >
+                    {errorMessage}
+                  </Typography>
                 </Box>
               )}
             </Alert>
@@ -200,7 +221,7 @@ const SuggestionDialog = ({
                 value={editedText}
                 onChange={(e) => setEditedText(e.target.value)}
                 autoFocus
-                aria-label="Edit AI suggestion"
+                aria-label={t('aria.editSuggestion')}
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     borderRadius: '12px',

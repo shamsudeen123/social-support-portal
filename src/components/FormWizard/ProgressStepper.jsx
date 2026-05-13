@@ -9,6 +9,7 @@ import FamilyRestroomIcon from '@mui/icons-material/FamilyRestroom';
 import DescriptionIcon from '@mui/icons-material/Description';
 import CheckIcon from '@mui/icons-material/Check';
 import { useTranslation } from 'react-i18next';
+import { numeral } from '../../utils/format';
 
 const ICONS = [PersonIcon, FamilyRestroomIcon, DescriptionIcon];
 const TOTAL = 3;
@@ -101,10 +102,12 @@ const CustomStepIcon = ({ icon }) => {
 
 /* ── ProgressStepper ── */
 const ProgressStepper = ({ currentStep }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isDark = theme.palette.mode === 'dark';
+  const lang = i18n.language;
+  const n = (num) => numeral(num, lang);
 
   const pct = Math.round((currentStep / TOTAL) * 100);
 
@@ -138,10 +141,10 @@ const ProgressStepper = ({ currentStep }) => {
                 fontSize: '0.7rem', fontWeight: 800, flexShrink: 0,
               }}
             >
-              {currentStep + 1}
+              {n(currentStep + 1)}
             </Box>
             <Typography variant="caption" color="text.secondary" fontWeight={500}>
-              {t('progress.step', { current: currentStep + 1, total: TOTAL })}
+              {t('progress.step', { current: n(currentStep + 1), total: n(TOTAL) })}
             </Typography>
           </Box>
 
@@ -172,7 +175,7 @@ const ProgressStepper = ({ currentStep }) => {
               color={pct === 100 ? 'success.main' : 'primary.main'}
               sx={{ minWidth: 28 }}
             >
-              {pct}%
+              {n(pct)}%
             </Typography>
           </Box>
         </Box>

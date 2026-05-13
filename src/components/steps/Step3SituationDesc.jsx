@@ -8,16 +8,19 @@ import { useSelector } from 'react-redux';
 import { generateAISuggestion } from '../../services/openai';
 import { generateGroqSuggestion } from '../../services/groq';
 import SuggestionDialog from '../AI/SuggestionDialog';
+import { numeral } from '../../utils/format';
 
 const AITextField = ({ name, label, placeholder, first }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { control, setValue, watch, formState: { errors } } = useFormContext();
   const formData = useSelector((s) => s.form.formData);
+  const lang = i18n.language;
 
   const [dialogOpen, setDialogOpen]   = useState(false);
   const [loading, setLoading]         = useState(false);
   const [suggestion, setSuggestion]   = useState('');
   const [error, setError]             = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const [provider, setProvider]       = useState('openai');
 
   const currentValue = watch(name) || '';
@@ -28,11 +31,13 @@ const AITextField = ({ name, label, placeholder, first }) => {
     setLoading(true);
     setSuggestion('');
     setError('');
+    setErrorMessage('');
     try {
-      const result = await serviceFn(name, formData);
+      const result = await serviceFn(name, formData, lang);
       setSuggestion(result);
     } catch (err) {
       setError(err.code || 'API_ERROR');
+      setErrorMessage(err.message || '');
     } finally {
       setLoading(false);
     }
@@ -55,6 +60,7 @@ const AITextField = ({ name, label, placeholder, first }) => {
     setDialogOpen(false);
     setSuggestion('');
     setError('');
+    setErrorMessage('');
   };
 
   return (
@@ -147,7 +153,7 @@ const AITextField = ({ name, label, placeholder, first }) => {
             fullWidth
             placeholder={placeholder}
             error={!!errors[name]}
-            helperText={errors[name]?.message || t('situation.charactersCount', { count: currentValue.length })}
+            helperText={errors[name]?.message || t('situation.charactersCount', { count: numeral(currentValue.length, lang) })}
             inputProps={{ 'aria-label': label }}
           />
         )}
@@ -158,6 +164,7 @@ const AITextField = ({ name, label, placeholder, first }) => {
         loading={loading}
         suggestion={suggestion}
         error={error}
+        errorMessage={errorMessage}
         provider={provider}
         onAccept={handleAccept}
         onDiscard={handleDiscard}

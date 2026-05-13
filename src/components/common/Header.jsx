@@ -1,9 +1,9 @@
 import React from 'react';
 import {
   AppBar, Toolbar, Typography, IconButton, Box,
-  Tooltip, Chip, useMediaQuery, Container,
+  Tooltip, useMediaQuery, Container,
 } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { useTheme, alpha } from '@mui/material/styles';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import TranslateIcon from '@mui/icons-material/Translate';
@@ -18,6 +18,7 @@ const Header = () => {
   const { t, i18n } = useTranslation();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isDark = theme.palette.mode === 'dark';
 
   const handleLang = () => {
     const next = language === 'en' ? 'ar' : 'en';
@@ -31,91 +32,141 @@ const Header = () => {
       color="inherit"
       elevation={0}
       sx={{
+        bgcolor: isDark ? 'rgba(13,12,26,0.88)' : 'rgba(255,255,255,0.88)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
         borderBottom: `1px solid ${theme.palette.divider}`,
-        bgcolor: theme.palette.mode === 'dark' ? '#1E293B' : '#ffffff',
-        backdropFilter: 'blur(8px)',
+        boxShadow: isDark
+          ? '0 1px 0 rgba(255,255,255,0.04)'
+          : '0 1px 12px rgba(67,56,202,0.07)',
       }}
     >
       <Container maxWidth="md" disableGutters>
         <Toolbar
           disableGutters
-          sx={{
-            px: { xs: 2, sm: 3 },
-            height: 64,
-            display: 'flex',
-            alignItems: 'center',
-          }}
+          sx={{ px: { xs: 2, sm: 3 }, height: 64, display: 'flex', alignItems: 'center' }}
         >
+
           {/* ── Brand ── */}
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, flex: 1, minWidth: 0 }}>
+
+            {/* Logo mark — gradient square */}
             <Box
               sx={{
-                width: 36, height: 36, borderRadius: 2,
-                bgcolor: 'primary.main',
+                width: 38, height: 38,
+                borderRadius: '10px',
+                background: 'linear-gradient(135deg, #3730A3 0%, #6366F1 100%)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 flexShrink: 0,
+                boxShadow: '0 2px 10px rgba(67,56,202,0.38)',
               }}
             >
-              <AccountBalanceIcon sx={{ color: '#fff', fontSize: 18 }} />
+              <AccountBalanceIcon sx={{ color: '#fff', fontSize: 19 }} />
             </Box>
 
+            {/* Title + subtitle */}
             <Box sx={{ minWidth: 0 }}>
               <Typography
                 variant="subtitle1"
-                fontWeight={700}
+                fontWeight={800}
                 lineHeight={1.2}
                 color="text.primary"
                 noWrap
+                sx={{ letterSpacing: '-0.01em' }}
               >
                 {t('appTitle')}
               </Typography>
+
               {!isMobile && (
-                <Typography variant="caption" color="text.secondary" display="block" lineHeight={1.3}>
-                  {t('appSubtitle')}
-                </Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, mt: 0.25 }}>
+                  {/* Live / online indicator dot */}
+                  <Box
+                    sx={{
+                      width: 6, height: 6, borderRadius: '50%',
+                      bgcolor: 'success.main',
+                      boxShadow: `0 0 0 2px ${alpha(theme.palette.success.main, 0.22)}`,
+                      flexShrink: 0,
+                    }}
+                  />
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    lineHeight={1.3}
+                    noWrap
+                    sx={{ fontSize: '0.7rem' }}
+                  >
+                    {t('appSubtitle')}
+                  </Typography>
+                </Box>
               )}
             </Box>
           </Box>
 
           {/* ── Controls ── */}
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexShrink: 0 }}>
-            <Tooltip title={language === 'en' ? 'عربي' : 'English'}>
-              <Chip
-                icon={<TranslateIcon sx={{ fontSize: '14px !important' }} />}
-                label={language === 'en' ? 'AR' : 'EN'}
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, flexShrink: 0 }}>
+
+            {/* Language pill */}
+            <Tooltip title={language === 'en' ? 'عربي' : 'English'} placement="bottom">
+              <Box
                 onClick={handleLang}
-                variant="outlined"
-                size="small"
-                aria-label="Toggle language"
+                role="button"
+                tabIndex={0}
+                aria-label={t('aria.toggleLanguage')}
+                onKeyDown={(e) => e.key === 'Enter' && handleLang()}
                 sx={{
-                  cursor: 'pointer',
-                  fontWeight: 700,
-                  fontSize: '0.72rem',
-                  height: 28,
-                  borderColor: 'primary.main',
+                  display: 'flex', alignItems: 'center', gap: 0.6,
+                  px: 1.25, py: 0.5,
+                  borderRadius: '20px',
+                  border: `1.5px solid ${alpha(theme.palette.primary.main, 0.35)}`,
                   color: 'primary.main',
+                  cursor: 'pointer',
+                  userSelect: 'none',
+                  transition: 'all 0.2s ease',
                   '&:hover': {
                     bgcolor: 'primary.main',
+                    borderColor: 'primary.main',
                     color: '#fff',
-                    '& .MuiChip-icon': { color: '#fff' },
+                    '& svg': { color: '#fff' },
                   },
                 }}
-              />
+              >
+                <TranslateIcon sx={{ fontSize: 13, color: 'inherit', transition: 'color 0.2s' }} />
+                <Typography sx={{ fontSize: '0.72rem', fontWeight: 700, lineHeight: 1, color: 'inherit' }}>
+                  {language === 'en' ? 'AR' : 'EN'}
+                </Typography>
+              </Box>
             </Tooltip>
 
-            <Tooltip title={themeMode === 'dark' ? t('theme.light') : t('theme.dark')}>
+            {/* Vertical divider */}
+            <Box sx={{ width: 1, height: 20, bgcolor: 'divider', mx: 0.25 }} />
+
+            {/* Theme toggle */}
+            <Tooltip
+              title={themeMode === 'dark' ? t('theme.light') : t('theme.dark')}
+              placement="bottom"
+            >
               <IconButton
                 onClick={() => dispatch(toggleTheme())}
                 size="small"
-                aria-label="Toggle theme"
-                sx={{ color: 'text.secondary' }}
+                aria-label={t('aria.toggleTheme')}
+                sx={{
+                  color: 'text.secondary',
+                  borderRadius: '8px',
+                  p: '7px',
+                  transition: 'all 0.2s ease',
+                  '&:hover': {
+                    bgcolor: alpha(theme.palette.primary.main, 0.08),
+                    color: 'primary.main',
+                  },
+                }}
               >
                 {themeMode === 'dark'
-                  ? <Brightness7Icon sx={{ fontSize: 20 }} />
-                  : <Brightness4Icon sx={{ fontSize: 20 }} />}
+                  ? <Brightness7Icon sx={{ fontSize: 19 }} />
+                  : <Brightness4Icon sx={{ fontSize: 19 }} />}
               </IconButton>
             </Tooltip>
           </Box>
+
         </Toolbar>
       </Container>
     </AppBar>
