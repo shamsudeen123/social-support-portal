@@ -1,56 +1,44 @@
 # Social Support Portal
 
-A government social support portal that allows citizens to apply for financial assistance with an AI-assisted multi-step form wizard.
-
-## Features
-
-- **3-Step Form Wizard** — Personal Info → Family & Financial → Situation Description
-- **AI Writing Assistance** — "Help Me Write" button on Step 3 uses OpenAI GPT to draft text
-- **English + Arabic (RTL)** — full bilingual support with RTL layout
-- **Responsive** — mobile, tablet, and desktop
-- **Dark / Light Mode** — theme toggle in the header
-- **Auto-Save** — form progress is saved to LocalStorage on every step
-- **Accessibility** — ARIA labels, keyboard navigation, focus management
-
-## Tech Stack
-
-| Layer | Library |
-|---|---|
-| Framework | React 18 |
-| UI | Material UI v5 |
-| Forms | React Hook Form |
-| State | Redux Toolkit |
-| HTTP | Axios |
-| i18n | react-i18next |
-| Routing | React Router v6 |
+A government social support portal where citizens can apply for financial assistance through a clean, guided multi-step form. Step 3 has an "Help Me Write" button powered by OpenAI that drafts the situation description for you — useful if someone isn't sure how to articulate their need.
 
 ---
 
-## Getting Started
+## What's inside
+
+- 3-step form wizard: Personal Info → Family & Financial → Situation Description
+- AI writing assistant on Step 3 (OpenAI GPT-4o-mini) with a review popup before anything gets inserted
+- English and Arabic with full RTL layout
+- Light / Dark mode toggle
+- Auto-saves progress to localStorage so you don't lose your work on refresh
+- Responsive on mobile, tablet, and desktop
+
+**Stack:** React 19, TypeScript, Vite, Material UI v5, Redux Toolkit, React Hook Form, react-i18next
+
+---
+
+## Running the project
 
 ### 1. Install dependencies
 
-```bash
-npm install --legacy-peer-deps
-```
+npm install 
 
-### 2. Configure the OpenAI API key
+### 2. Set up your API keys
 
-Copy `.env.example` to `.env` and fill in your key:
+Copy the example env file:
 
 ```bash
 cp .env.example .env
 ```
 
-Open `.env` and set:
+Then open `.env` and fill in your OpenAI key:
 
-```
-REACT_APP_OPENAI_API_KEY=sk-...your-key-here...
-```
+VITE_OPENAI_API_KEY=sk-proj-...your-key-here...
+VITE_GROQ_API_KEY=gsk_...optional...
 
-Get a key at https://platform.openai.com/api-keys
+**Getting an OpenAI key:** Go to https://platform.openai.com/api-keys, create a new secret key, and paste it in. The free tier works fine for testing.
 
-> **Without a key:** The form works fully. The "Help Me Write" button shows a clear error message explaining the key is missing, and users can still type manually.
+> If you skip this step entirely, the app still works. The "Help Me Write" button will show a clear error message inside the popup, and users can just type manually. Nothing else breaks.
 
 ### 3. Start the dev server
 
@@ -58,77 +46,79 @@ Get a key at https://platform.openai.com/api-keys
 npm start
 ```
 
-Open http://localhost:3000
+Opens at http://localhost:3000
+
+### Other commands
+
+```bash
+npm run build          # production build → dist/
+npm run preview        # preview the production build locally
+npm test               # run the test suite once
+npm run test:watch     # run tests in watch mode
+npm run test:coverage  # run tests + generate coverage report
+```
 
 ---
 
-## Project Structure
+## Project structure
 
 ```
 src/
 ├── components/
 │   ├── AI/
-│   │   └── SuggestionDialog.js   # AI popup: Accept / Edit / Discard
+│   │   └── SuggestionDialog.tsx   # The popup that shows the AI draft
 │   ├── common/
-│   │   ├── Header.js             # App bar with lang/theme toggles
-│   │   └── SaveIndicator.js      # "Progress saved" toast
+│   │   ├── Header.tsx             # App bar with language and theme toggles
+│   │   ├── SplashScreen.tsx       # Loading screen on first visit
+│   │   └── SaveIndicator.tsx      # "Progress saved" toast
 │   ├── FormWizard/
-│   │   ├── FormWizard.js         # Wizard shell, nav buttons, form context
-│   │   └── ProgressStepper.js    # Linear progress + MUI Stepper
+│   │   ├── FormWizard.tsx         # Wizard shell — handles step nav and form context
+│   │   └── ProgressStepper.tsx    # The step indicators at the top
 │   └── steps/
-│       ├── Step1PersonalInfo.js  # Name, ID, DOB, Gender, Address
-│       ├── Step2FamilyFinancial.js # Marital, Dependents, Employment, Income, Housing
-│       └── Step3SituationDesc.js # 3 AI-assisted textareas
+│       ├── Step1PersonalInfo.tsx       # Name, National ID, DOB, Gender, Address
+│       ├── Step2FamilyFinancial.tsx    # Marital status, Dependents, Employment, Income, Housing
+│       └── Step3SituationDesc.tsx      # 3 AI-assisted text areas
 ├── i18n/
-│   ├── en.json                   # English strings
-│   ├── ar.json                   # Arabic strings
-│   └── index.js                  # i18next config
+│   ├── en.json                    # English strings
+│   ├── ar.json                    # Arabic strings
+│   └── index.ts                   # i18next setup
 ├── pages/
-│   ├── ApplicationPage.js        # Routes form vs. success
-│   └── SuccessPage.js            # Reference number + confirmation
+│   ├── ApplicationPage.tsx        # Entry point, routes to form or success
+│   └── SuccessPage.tsx            # Confirmation screen with reference number
 ├── services/
-│   └── openai.js                 # Axios call to OpenAI GPT-3.5-turbo
+│   ├── openai.ts                  # OpenAI API call (GPT-4o-mini)
+│   └── groq.ts                    # Groq API call (Llama 3.3) — alternative provider
 ├── slices/
-│   ├── formSlice.js              # Form data + step + submit + LocalStorage
-│   └── uiSlice.js                # Theme mode + language
+│   ├── formSlice.ts               # Form data, current step, submit state, localStorage sync
+│   └── uiSlice.ts                 # Theme mode, language
 ├── store/
-│   └── index.js                  # Redux store
+│   └── index.ts                   # Redux store setup
 └── theme/
-    └── index.js                  # MUI theme (light/dark + RTL)
+    └── index.ts                   # MUI theme config (light/dark + RTL support)
 ```
 
 ---
 
-## Architecture Notes
+## Architecture and decisions
 
-### State Management
-Redux Toolkit holds two slices:
-- `form` — all field values, current step, submission state, reference number. Every mutation persists to `localStorage` automatically.
-- `ui` — theme mode and language selection.
+### State: two Redux slices
 
-### Form Handling
-React Hook Form's `FormProvider` wraps the entire wizard so each step's `Controller` fields connect to the same form instance. On "Next", `trigger()` validates only the visible step's fields before advancing.
+I kept state management simple with just two slices. `formSlice` owns everything related to the application — field values, which step you're on, whether submission is in progress, and the reference number you get at the end. It also automatically syncs to `localStorage` so progress survives a page refresh without any extra work.
 
-### AI Integration
-`services/openai.js` builds a context-aware GPT-3.5-turbo prompt per field using the user's Step 2 data (employment status, income, dependents). The response appears in a modal where the user can:
-1. **Use This Text** — inserts directly into the textarea
-2. **Edit First** — opens an inline editor inside the modal
-3. **Discard** — closes without changes
+`uiSlice` just holds the theme preference and the active language. These two are intentionally separate because UI state and form data have completely different lifecycles.
 
-Errors (no key, timeout, API failure) are caught and shown with user-friendly messages inside the modal.
+### Forms: React Hook Form across steps
 
-### Internationalization
-`react-i18next` with JSON resource files. Switching to Arabic triggers:
-- `document.dir = 'rtl'`
-- MUI theme `direction: 'rtl'` (flips flex direction, margins, etc.)
-- Arabic font stack (Noto Sans Arabic)
+React Hook Form's `FormProvider` wraps the entire wizard so all three steps share one form instance. When you hit "Next", it calls `trigger()` with only the current step's field names — so validation fires only for what's visible, not the whole form at once. This avoids the awkward situation where errors from a future step appear before the user has seen them.
 
----
+### AI integration
 
-## Potential Improvements
+`services/openai.ts` builds a context-aware prompt using data from Step 2 (employment status, income, number of dependents) before calling GPT-4o-mini. The idea is that the AI should know your situation before trying to describe it, rather than asking generic questions.
 
-- Add a PDF export of the submitted application
-- Persist draft to a backend API instead of only LocalStorage
-- Add file upload for supporting documents
-- Add unit tests with React Testing Library
-- Add CAPTCHA to prevent spam submissions
+The response lands in `SuggestionDialog` where users have three options: **Use This** (inserts directly), **Edit First** (inline editor opens inside the modal), or **Discard**. Nothing gets inserted without the user explicitly choosing to — the AI is assistive, not automatic.
+
+All API errors (missing key, rate limit, timeout, network failure) are caught and shown inside the modal with a human-readable message, so the user knows what happened and can still continue manually.
+
+### Internationalization and RTL
+
+Switching to Arabic flips the layout properly — `document.dir = 'rtl'`, MUI's theme direction, and `stylis-plugin-rtl` for the CSS. The Arabic font stack (Noto Sans Arabic) is loaded separately. English and Arabic strings live in `en.json` and `ar.json` and are referenced by key throughout the components.

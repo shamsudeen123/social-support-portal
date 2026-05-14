@@ -15,12 +15,32 @@ body {
   outline-offset: 2px;
 }
 
+.MuiInputBase-root :focus-visible,
+.MuiOutlinedInput-root :focus-visible {
+  outline: none;
+}
+
 /* Smooth scroll */
 html {
   scroll-behavior: smooth;
 }
 
+/* Placeholder: same font, muted */
+input::placeholder,
+textarea::placeholder {
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 400;
+  opacity: 1;
+}
+
 /* RTL number inputs */
 [dir="rtl"] input[type="number"] {
   text-align: right;
+}
+
+/* Autofill uses the same font */
+input:-webkit-autofill {
+  font-family: inherit;
 }
