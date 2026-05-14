@@ -256,14 +256,20 @@ const SuggestionDialog = ({
           <Divider />
           <DialogActions sx={{ p: 0 }}>
             <Box sx={{
-              display: 'flex', alignItems: 'center',
+              display: 'flex',
+              flexDirection: { xs: 'column-reverse', sm: 'row' },
+              alignItems: { xs: 'stretch', sm: 'center' },
               justifyContent: 'space-between',
-              width: '100%', px: { xs: 2, sm: 3 }, py: { xs: 1.5, sm: 2.5 }, gap: 1, flexWrap: 'wrap',
+              width: '100%',
+              px: { xs: 2, sm: 3 },
+              py: { xs: 1.5, sm: 2.5 },
+              gap: { xs: 1, sm: 1 },
             }}>
               <Button
                 onClick={onDiscard}
                 variant="text"
                 color="inherit"
+                fullWidth={isMobile}
                 startIcon={<CloseIcon sx={{ fontSize: '18px !important' }} />}
                 sx={{
                   color: 'text.secondary',
@@ -276,12 +282,18 @@ const SuggestionDialog = ({
                 {t('ai.discard')}
               </Button>
 
-              <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center' }}>
+              <Box sx={{
+                display: 'flex',
+                flexDirection: { xs: 'column', sm: 'row' },
+                gap: { xs: 1, sm: 1.5 },
+                alignItems: 'stretch',
+              }}>
                 {canRetry && onRetry && (
                   <Button
                     onClick={onRetry}
                     variant="outlined"
                     color={isGroq ? 'success' : 'primary'}
+                    fullWidth={isMobile}
                     startIcon={<RefreshIcon />}
                   >
                     {t('ai.retry')}
@@ -295,6 +307,7 @@ const SuggestionDialog = ({
                         onClick={() => setEditMode(true)}
                         variant="outlined"
                         color={isGroq ? 'success' : 'primary'}
+                        fullWidth={isMobile}
                         startIcon={<EditIcon />}
                       >
                         {t('ai.edit')}
@@ -304,6 +317,7 @@ const SuggestionDialog = ({
                       onClick={handleAccept}
                       variant="contained"
                       color={isGroq ? 'success' : 'primary'}
+                      fullWidth={isMobile}
                       startIcon={<CheckIcon />}
                     >
                       {t('ai.accept')}
