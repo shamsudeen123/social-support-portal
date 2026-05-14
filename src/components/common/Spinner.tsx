@@ -2,13 +2,11 @@ import { Box } from '@mui/material';
 import { useTheme, keyframes } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 
-// Stepped rotation — 12 discrete jumps per revolution, exactly like iOS UIActivityIndicatorView
 const spin = keyframes`
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
 `;
 
-// Pre-set opacities per segment: brightest at leading edge, fading behind it
 const OPACITIES = [1, 0.85, 0.72, 0.60, 0.50, 0.42, 0.34, 0.28, 0.22, 0.18, 0.14, 0.10];
 
 interface Props {

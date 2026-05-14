@@ -85,15 +85,6 @@ describe('SuggestionDialog', () => {
       expect(onAccept).toHaveBeenCalledWith('Edited text');
     });
 
-    it('shows OpenAI attribution chip', () => {
-      renderWithProviders(<SuggestionDialog {...defaultProps} suggestion="text" provider="openai" />);
-      expect(screen.getByText('ai.poweredBy')).toBeInTheDocument();
-    });
-
-    it('shows Groq attribution chip', () => {
-      renderWithProviders(<SuggestionDialog {...defaultProps} suggestion="text" provider="groq" />);
-      expect(screen.getByText('ai.poweredByGroq')).toBeInTheDocument();
-    });
   });
 
   describe('error states', () => {

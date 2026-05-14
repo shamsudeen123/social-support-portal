@@ -73,19 +73,12 @@ const getTheme = (mode: 'light' | 'dark', direction: 'ltr' | 'rtl' = 'ltr'): The
         styleOverrides: {
           root: ({ theme }) => ({
             borderRadius: 8,
-            transition: 'box-shadow 0.2s ease',
             '&:hover .MuiOutlinedInput-notchedOutline': {
               borderColor: theme.palette.primary.main,
             },
-            '&.Mui-focused': {
-              boxShadow: `0 0 0 3px ${mode === 'dark' ? 'rgba(99,102,241,0.25)' : 'rgba(67,56,202,0.15)'}`,
-            },
             '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-              borderWidth: '1.5px',
+              borderWidth: '2px',
               borderColor: theme.palette.primary.main,
-            },
-            '&.Mui-error': {
-              boxShadow: 'none',
             },
           }),
           notchedOutline: {

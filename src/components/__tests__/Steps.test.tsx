@@ -7,6 +7,8 @@ import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import formReducer from '../../slices/formSlice';
 import uiReducer from '../../slices/uiSlice';
 import Step1PersonalInfo from '../steps/Step1PersonalInfo';
@@ -58,10 +60,12 @@ function StepWrapper({ children }: { children: React.ReactNode }) {
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <FormProvider {...methods}>
-          {children}
-        </FormProvider>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <CssBaseline />
+          <FormProvider {...methods}>
+            {children}
+          </FormProvider>
+        </LocalizationProvider>
       </ThemeProvider>
     </Provider>
   );

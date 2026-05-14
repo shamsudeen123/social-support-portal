@@ -247,7 +247,6 @@ const SuggestionDialog = ({
                 </Typography>
               </Box>
             )}
-
           </Box>
         )}
       </DialogContent>
