@@ -14,6 +14,7 @@ import 'dayjs/locale/ar';
 import getTheme from './theme';
 import Header from './components/common/Header';
 import ApplicationPage from './pages/ApplicationPage';
+import HelpPage from './pages/HelpPage';
 import SplashScreen from './components/common/SplashScreen';
 import { RootState } from './store';
 import './i18n';
@@ -48,6 +49,7 @@ const App = () => {
             <Header />
             <Routes>
               <Route path="/" element={<ApplicationPage />} />
+              <Route path="/help" element={<HelpPage />} />
             </Routes>
           </div>
         </BrowserRouter>

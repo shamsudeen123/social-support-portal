@@ -13,6 +13,29 @@
     "saveProgress": "Progress Saved",
     "saving": "Saving..."
   },
+  "help": {
+    "nav": "Help",
+    "badge": "Guide",
+    "title": "Help & Project Guide",
+    "intro": "Use this page to understand what this portal is for, what information you need, and how to complete the application.",
+    "aboutTitle": "About the project",
+    "aboutBody": "The Social Support Portal is a digital application form for people requesting financial assistance. It collects personal details, family and financial information, and a short explanation of the applicant's current situation so the support team can review the request clearly.",
+    "whatToDo": {
+      "title": "What to do",
+      "body": "Start the application, fill in each section with accurate information, review your answers, and submit the form when everything is complete."
+    },
+    "howToDo": {
+      "title": "How to do it",
+      "body": "Move through the three steps using Next and Back. Required fields will show a message if something is missing. Your progress is saved while you move between steps."
+    },
+    "tips": {
+      "title": "Writing help",
+      "body": "In the situation section, explain your financial hardship, employment status, expenses, and why assistance is needed now. You can use the AI writing helper, then review and edit the text before using it."
+    },
+    "needTitle": "Before you submit",
+    "needBody": "Check that your contact details, income, dependents, housing status, and situation description are correct. After submission, the portal shows a reference number and summary for your records.",
+    "backToApplication": "Back to application"
+  },
   "personal": {
     "title": "Personal Information",
     "subtitle": "Please provide your personal details accurately",

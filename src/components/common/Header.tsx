@@ -7,7 +7,9 @@ import { useTheme, alpha } from '@mui/material/styles';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import TranslateIcon from '@mui/icons-material/Translate';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutlineOutlined';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link as RouterLink } from 'react-router-dom';
 import { toggleTheme, setLanguage } from '../../slices/uiSlice';
 import { useTranslation } from 'react-i18next';
 import { RootState } from '../../store';
@@ -95,6 +97,45 @@ const Header = () => {
           </Box>
 
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, flexShrink: 0 }}>
+            <Tooltip title={t('help.nav')} placement="bottom">
+              <Box
+                component={RouterLink}
+                to="/help"
+                aria-label={t('help.nav')}
+                sx={{
+                  height: 34,
+                  minWidth: { xs: 34, sm: 72 },
+                  px: { xs: 0, sm: 1.1 },
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 0.65,
+                  color: 'text.secondary',
+                  borderRadius: '8px',
+                  textDecoration: 'none',
+                  flexShrink: 0,
+                  transition: 'background-color 0.2s ease, color 0.2s ease',
+                  '&:hover': {
+                    bgcolor: alpha(theme.palette.primary.main, 0.08),
+                    color: 'primary.main',
+                  },
+                  '&:focus-visible': {
+                    outline: `2px solid ${alpha(theme.palette.primary.main, 0.45)}`,
+                    outlineOffset: 2,
+                  },
+                }}
+              >
+                <HelpOutlineIcon sx={{ fontSize: 19, flexShrink: 0 }} />
+                {!isMobile && (
+                  <Typography
+                    component="span"
+                    sx={{ fontSize: '0.8125rem', fontWeight: 700, lineHeight: 1 }}
+                  >
+                    {t('help.nav')}
+                  </Typography>
+                )}
+              </Box>
+            </Tooltip>
 
             <Tooltip title={language === 'en' ? 'عربي' : 'English'} placement="bottom">
               <Box
